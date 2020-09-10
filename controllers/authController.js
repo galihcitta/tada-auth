@@ -7,8 +7,8 @@ const validEmail = require('../utils/validEmail')
 
 module.exports = {
     login: (req, res) => {
-        let { name, id } = req.user
-        res.status(200).json({ success: true, user: `${capitalize(name)}`, id: id, isAuthenticated: true })
+        let { name } = req.user
+        res.status(200).json({ success: true, user: `${capitalize(name)}`, isAuthenticated: true })
     },
     logout: (req, res) => {
         req.logout()
@@ -25,13 +25,13 @@ module.exports = {
             res.status(400).json({ success: false, message: "Please enter a valid email address." })
         }
 
-        db.User.findOne({ email: email })
+        db.findOne({ email: req.body.email })
         .then(user => {
             if(user) {
                 res.status(400).json({ success: false, message: "That email is already in use." })
             }
 
-            let newUser = new db.User({
+            let newUser = new db({
                 email,
                 password,
                 ...req.body
@@ -57,8 +57,8 @@ module.exports = {
         })
     },
     authStatus: (req, res) => {
-        let { name, id } = req.user
-        res.status(200).json({ success: true, user:`${capitalize(name)}`, id: id, isAuthenticated: true })
+        let { name } = req.user
+        res.status(200).json({ success: true, user:`${capitalize(name)}`, isAuthenticated: true })
     }
 }
 
