@@ -8,7 +8,7 @@ const opts = {
     passwordField: 'password'
 }
 
-passport.use(new LocalStrategy(options, (email, password, done) => {
+passport.use(new LocalStrategy(opts, (email, password, done) => {
     db.User.findOne({ email: email }, (err, user) => {
         if (err) return done(err)
 
